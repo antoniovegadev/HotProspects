@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		E2AB8C4D26C829E600566E20 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AB8C4C26C829E600566E20 /* ContentView.swift */; };
 		E2AB8C4F26C829E900566E20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2AB8C4E26C829E900566E20 /* Assets.xcassets */; };
 		E2AB8C5226C829E900566E20 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2AB8C5126C829E900566E20 /* Preview Assets.xcassets */; };
+		E2AB8C8426C99F3700566E20 /* SamplePackage in Frameworks */ = {isa = PBXBuildFile; productRef = E2AB8C8326C99F3700566E20 /* SamplePackage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2AB8C8426C99F3700566E20 /* SamplePackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +87,9 @@
 			dependencies = (
 			);
 			name = HotProspects;
+			packageProductDependencies = (
+				E2AB8C8326C99F3700566E20 /* SamplePackage */,
+			);
 			productName = HotProspects;
 			productReference = E2AB8C4726C829E600566E20 /* HotProspects.app */;
 			productType = "com.apple.product-type.application";
@@ -112,6 +117,9 @@
 				Base,
 			);
 			mainGroup = E2AB8C3E26C829E600566E20;
+			packageReferences = (
+				E2AB8C8226C99F3700566E20 /* XCRemoteSwiftPackageReference "SamplePackage" */,
+			);
 			productRefGroup = E2AB8C4826C829E600566E20 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -328,6 +336,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E2AB8C8226C99F3700566E20 /* XCRemoteSwiftPackageReference "SamplePackage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/SamplePackage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E2AB8C8326C99F3700566E20 /* SamplePackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2AB8C8226C99F3700566E20 /* XCRemoteSwiftPackageReference "SamplePackage" */;
+			productName = SamplePackage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E2AB8C3F26C829E600566E20 /* Project object */;
 }
