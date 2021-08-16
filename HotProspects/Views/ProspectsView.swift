@@ -14,9 +14,15 @@ struct ProspectsView: View {
         case none, contacted, uncontacted
     }
     
+    enum sortType {
+        case name, added
+    }
+    
     let filter: FilterType
     @EnvironmentObject var prospects: Prospects
     @State private var isShowingScanner = false
+    @State private var showingActionSheet = false
+    @State private var sortCriteria: sortType = .name
     
     var title: String {
         switch filter {
@@ -30,13 +36,22 @@ struct ProspectsView: View {
     }
     
     var filteredProspects: [Prospect] {
+        var filtered = [Prospect]()
+        
         switch filter {
         case .none:
-            return prospects.people
+            filtered = prospects.people
         case .contacted:
-            return prospects.people.filter { $0.isContacted }
+            filtered = prospects.people.filter { $0.isContacted }
         case .uncontacted:
-            return prospects.people.filter { !$0.isContacted }
+            filtered = prospects.people.filter { !$0.isContacted }
+        }
+        
+        switch sortCriteria {
+        case .added:
+            return filtered.sorted(by: \.dateAdded, using: >)
+        case .name:
+            return filtered.sorted(by: \.name)
         }
     }
     
@@ -44,11 +59,25 @@ struct ProspectsView: View {
         NavigationView {
             List {
                 ForEach(filteredProspects) { prospect in
-                    VStack(alignment: .leading) {
-                        Text(prospect.name)
-                            .font(.headline)
-                        Text(prospect.emailAddress)
-                            .foregroundColor(.secondary)
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(prospect.name)
+                                .font(.headline)
+                            Text(prospect.emailAddress)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        Spacer()
+                        
+                        if filter == .none {
+                            if prospect.isContacted {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                            } else {
+                                Image(systemName: "minus.circle.fill")
+                                    .foregroundColor(.red)
+                            }
+                        }
                     }
                     .contextMenu {
                         Button(prospect.isContacted ? "Mark Uncontacted" : "Mark Contacted" ) {
@@ -63,7 +92,11 @@ struct ProspectsView: View {
                 }
             }
             .navigationBarTitle(title)
-            .navigationBarItems(trailing: Button(action: {
+            .navigationBarItems(leading: Button(action: {
+                self.showingActionSheet = true
+            }) {
+                Image(systemName: "list.bullet")
+            },trailing: Button(action: {
                 self.isShowingScanner = true
             }) {
                 Image(systemName: "qrcode.viewfinder")
@@ -71,6 +104,17 @@ struct ProspectsView: View {
             })
             .sheet(isPresented: $isShowingScanner) {
                 CodeScannerView(codeTypes: [.qr], simulatedData: "Paul Hudson\npaul@hackingwithswift.com", completion: self.handleScan)
+            }
+            .actionSheet(isPresented: $showingActionSheet) {
+                ActionSheet(title: Text("Select the way users are sorted"), buttons: [
+                        .cancel(),
+                        .default(Text("Name")) {
+                            sortCriteria = .name
+                        },
+                        .default(Text("Recent")) {
+                            sortCriteria = .added
+                        },
+                ])
             }
         }
     }

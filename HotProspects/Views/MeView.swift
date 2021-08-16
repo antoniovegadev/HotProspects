@@ -24,6 +24,7 @@ struct MeView: View {
 
                 TextField("Email address", text: $emailAddress)
                     .textContentType(.emailAddress)
+                    .autocapitalization(.none)
                     .font(.title)
                     .padding([.horizontal, .bottom])
 
